@@ -1,9 +1,9 @@
 {
   "id": null,
-  "title": "Strava Activities (MySQL)",
+  "title": "Strava Activities",
   "timezone": "browser",
   "schemaVersion": 36,
-  "version": 1,
+  "version": 10,
   "refresh": "5m",
   "panels": [
     {
@@ -25,34 +25,28 @@
       ]
     },
     {
-      "type": "stat",
-      "title": "Total Distance (km)",
-      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 4 },
+      "type": "table",
+      "title": "All Activities",
+      "gridPos": { "x": 0, "y": 9, "w": 24, "h": 10 },
       "targets": [
         {
-          "refId": "B",
+          "refId": "D",
           "datasource": { "type": "mysql", "uid": "dashboard-strava" },
           "format": "table",
-          "rawSql": "SELECT SUM(distance)/1000 AS value FROM strava_activities"
+          "rawSql": "SELECT start_date, name, type, distance/1000 AS distance_km, moving_time/60 AS moving_time_min, elapsed_time/60 AS elapsed_time_min, total_elevation_gain AS elevation_gain_m FROM strava_activities ORDER BY start_date DESC"
         }
-      ]
-    },
-    {
-      "type": "piechart",
-      "title": "Activities by Type",
-      "gridPos": { "x": 12, "y": 4, "w": 12, "h": 5 },
+      ],
       "options": {
-        "legend": { "displayMode": "table", "placement": "right" },
-        "pieType": "pie"
-      },
-      "targets": [
-        {
-          "refId": "C",
-          "datasource": { "type": "mysql", "uid": "dashboard-strava" },
-          "format": "table",
-          "rawSql": "SELECT type AS metric, COUNT(*) AS value FROM strava_activities GROUP BY type"
-        }
-      ]
+        "sortBy": [
+          {
+            "displayName": "start_date",
+            "desc": true
+          }
+        ]
+      }
     }
-  ]
+  ],
+  "templating": {
+    "list": []
+  }
 }
